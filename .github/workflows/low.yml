@@ -1,0 +1,91 @@
+name: MKV to LOW HLS (Video Copy + Telugu 5.1 Audio, ~500 MB)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      # 2️⃣ Install ffmpeg
+      - name: Install ffmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
+      # 3️⃣ Convert MKV to HLS (~500 MB, Telugu 5.1 audio)
+      - name: Convert MKV to HLS (Video ~500 MB + Telugu 5.1)
+        run: |
+          set -e
+
+          INPUT_URL="https://cdn.telugudub.store/Andhra_King_Taluka_%282025%29_Telugu_720p.mkv"
+          OUTPUT_FOLDER="aktl"
+          mkdir -p "$OUTPUT_FOLDER"
+          OUTPUT_PATH="$OUTPUT_FOLDER/playlist.m3u8"
+
+          echo "🎬 Searching for Telugu audio stream and converting to HLS..."
+
+          # Try to select Telugu audio stream
+          ffmpeg -y -i "$INPUT_URL" \
+            -map 0:v:0 \
+            -map 0:a:m:language:tel \
+            -c:v libx264 \
+            -preset slow \
+            -crf 23 \
+            -profile:v high \
+            -level 4.1 \
+            -pix_fmt yuv420p \
+            -c:a copy \
+            -f hls \
+            -hls_time 10 \
+            -hls_playlist_type vod \
+            -hls_segment_filename "$OUTPUT_FOLDER/segment%03d.ts" \
+            "$OUTPUT_PATH" || \
+          {
+            echo "⚠️ Telugu stream not found, falling back to first audio stream..."
+            ffmpeg -y -i "$INPUT_URL" \
+              -map 0:v:0 \
+              -map 0:a:0 \
+              -c:v libx264 \
+              -preset slow \
+              -crf 23 \
+              -profile:v high \
+              -level 4.1 \
+              -pix_fmt yuv420p \
+              -c:a copy \
+              -f hls \
+              -hls_time 10 \
+              -hls_playlist_type vod \
+              -hls_segment_filename "$OUTPUT_FOLDER/segment%03d.ts" \
+              "$OUTPUT_PATH"
+          }
+
+          echo "✅ HLS conversion completed. Output: $OUTPUT_PATH"
+
+      # 4️⃣ Commit and push results
+      - name: Commit and push HLS output
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: |
+          git config --global user.name "pothabattulavinod"
+          git config --global user.email "vinodyadavpothabattula666@gmail.com"
+
+          git add aktl
+
+          if ! git diff-index --quiet HEAD; then
+            git commit -m "Add HLS (video ~500 MB + Telugu 5.1 audio) [skip ci]"
+          else
+            echo "No new files to commit."
+          fi
+
+          git remote remove origin || true
+          git remote add origin https://x-access-token:${GH_PAT}@github.com/pothabattulavinod/adc2.git
+          git push origin HEAD:main
