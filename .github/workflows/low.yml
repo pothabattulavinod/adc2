@@ -1,4 +1,5 @@
-name: MKV to LOW HLS (Video Copy + Telugu 5.1 Audio, ~500 MB)
+
+name: MKV to Ultra-Low HLS (<300MB)
 
 on:
   workflow_dispatch:
@@ -8,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout repository
+      # 1️⃣ Checkout repo
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
@@ -21,56 +22,43 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y ffmpeg
 
-      # 3️⃣ Convert MKV to HLS (~500 MB, Telugu 5.1 audio)
-      - name: Convert MKV to HLS (Video ~500 MB + Telugu 5.1)
+      # 3️⃣ Convert MKV → HLS (Compressed under 300MB)
+      - name: Convert MKV to HLS (<300MB)
         run: |
           set -e
 
-          INPUT_URL="https://cdn.telugudub.store/Andhra_King_Taluka_%282025%29_Telugu_720p.mkv"
-          OUTPUT_FOLDER="aktl"
-          mkdir -p "$OUTPUT_FOLDER"
-          OUTPUT_PATH="$OUTPUT_FOLDER/playlist.m3u8"
+          INPUT_URL="https://cdn.telugudub.store/Andhra_King_Taluka_%282025%29_Telugu_700MB.mkv"
+          OUTPUT_DIR="aktl"
+          mkdir -p "$OUTPUT_DIR"
 
-          echo "🎬 Searching for Telugu audio stream and converting to HLS..."
+          echo "🎬 Starting ultra-low bitrate HLS encoding..."
 
-          # Try to select Telugu audio stream
           ffmpeg -y -i "$INPUT_URL" \
             -map 0:v:0 \
-            -map 0:a:m:language:tel \
+            -map 0:a:0 \
+            -vf "scale=854:-2" \
             -c:v libx264 \
-            -preset slow \
-            -crf 23 \
-            -profile:v high \
-            -level 4.1 \
+            -preset veryfast \
+            -profile:v baseline \
+            -level 3.0 \
             -pix_fmt yuv420p \
-            -c:a copy \
+            -b:v 190k \
+            -maxrate 220k \
+            -bufsize 380k \
+            -c:a aac \
+            -ac 2 \
+            -b:a 48k \
+            -ar 44100 \
             -f hls \
-            -hls_time 10 \
+            -hls_time 6 \
             -hls_playlist_type vod \
-            -hls_segment_filename "$OUTPUT_FOLDER/segment%03d.ts" \
-            "$OUTPUT_PATH" || \
-          {
-            echo "⚠️ Telugu stream not found, falling back to first audio stream..."
-            ffmpeg -y -i "$INPUT_URL" \
-              -map 0:v:0 \
-              -map 0:a:0 \
-              -c:v libx264 \
-              -preset slow \
-              -crf 23 \
-              -profile:v high \
-              -level 4.1 \
-              -pix_fmt yuv420p \
-              -c:a copy \
-              -f hls \
-              -hls_time 10 \
-              -hls_playlist_type vod \
-              -hls_segment_filename "$OUTPUT_FOLDER/segment%03d.ts" \
-              "$OUTPUT_PATH"
-          }
+            -hls_flags independent_segments \
+            -hls_segment_filename "$OUTPUT_DIR/segment%04d.ts" \
+            "$OUTPUT_DIR/playlist.m3u8"
 
-          echo "✅ HLS conversion completed. Output: $OUTPUT_PATH"
+          echo "✅ HLS generation completed"
 
-      # 4️⃣ Commit and push results
+      # 4️⃣ Commit & push results
       - name: Commit and push HLS output
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
@@ -80,10 +68,10 @@ jobs:
 
           git add aktl
 
-          if ! git diff-index --quiet HEAD; then
-            git commit -m "Add HLS (video ~500 MB + Telugu 5.1 audio) [skip ci]"
+          if ! git diff --cached --quiet; then
+            git commit -m "Add ultra-low HLS (<300MB)"
           else
-            echo "No new files to commit."
+            echo "No changes to commit"
           fi
 
           git remote remove origin || true
