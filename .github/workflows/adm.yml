@@ -26,8 +26,8 @@ jobs:
         run: |
           set -e
 
-          INPUT_URL="https://nw23.seedr.cc/ff_get/5845802180/www.5MovieRulz.clothing%20-%20They%20Call%20Him%20OG%20(2025)%20Telugu%20HQ%20HDRip%20-%20x264%20-%20AAC%20-%20250MB%20-%20ESub.mkv?st=y_p1D8F88vpOP40F9tb_aw&e=1766954323"
-          OUTPUT_FOLDER="ogl"
+          INPUT_URL="https://nw16.seedr.cc/ff_get/5845806435/www.5MovieRulz.realty%20-%20HIT%20The%20Third%20Case%20(2025) Telugu%20HQ%20HDRip%20-%20x264%20-%20AAC%20-%20250MB%20-%20ESub.mkv?st=XC8IvDdH4zhfkIaCMgsN6A&e=1766954843"
+          OUTPUT_FOLDER="hit3l"
           mkdir -p "$OUTPUT_FOLDER"
           OUTPUT_PATH="$OUTPUT_FOLDER/playlist.m3u8"
 
@@ -68,7 +68,7 @@ jobs:
           git config --global user.name "pothabattulavinod"
           git config --global user.email "vinodyadavpothabattula666@gmail.com"
 
-          git add ogl
+          git add hit3l
 
           if ! git diff-index --quiet HEAD; then
             git commit -m "Add HLS (video copy + Telugu 5.1 audio) [skip ci]"
