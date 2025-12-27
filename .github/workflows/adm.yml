@@ -26,8 +26,8 @@ jobs:
         run: |
           set -e
 
-          INPUT_URL="https://rd18.seedr.cc/ff_get/5845779195/www.5MovieRulz.shop%20-%20Pushpa%20The%20Rise%20(2021)%20720p%20Telugu%20HQ%20HDRip%20-%20x264%20-%20(DD_5.1%20-%20192Kbps%20_%20AAC%202.0)%20-%201.5GB%20-%20ESub.mkv?st=TxRoGuDKZ47AC_GuZ7W2dQ&e=1766951531"
-          OUTPUT_FOLDER="PS1"
+          INPUT_URL="https://rd20.seedr.cc/ff_get/5845799720/www.5MovieRulz.clothing%20-%20Dude%20(2025)%20Telugu%20HQ%20HDRip%20-%20x264%20-%20AAC%20-%20250MB%20-%20ESub.mkv?st=xGf8USjqA2_eHBB0zV-YRA&e=1766953793"
+          OUTPUT_FOLDER="dul"
           mkdir -p "$OUTPUT_FOLDER"
           OUTPUT_PATH="$OUTPUT_FOLDER/playlist.m3u8"
 
@@ -68,7 +68,7 @@ jobs:
           git config --global user.name "pothabattulavinod"
           git config --global user.email "vinodyadavpothabattula666@gmail.com"
 
-          git add PS1
+          git add dul
 
           if ! git diff-index --quiet HEAD; then
             git commit -m "Add HLS (video copy + Telugu 5.1 audio) [skip ci]"
