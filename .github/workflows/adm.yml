@@ -77,5 +77,5 @@ jobs:
           fi
 
           git remote remove origin || true
-          git remote add origin https://x-access-token:${GH_PAT}@github.com/pothabattulavinod/adc1.git
+          git remote add origin https://x-access-token:${GH_PAT}@github.com/pothabattulavinod/adc2.git
           git push origin HEAD:main
