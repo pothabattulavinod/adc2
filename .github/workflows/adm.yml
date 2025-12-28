@@ -26,8 +26,8 @@ jobs:
         run: |
           set -e
 
-          INPUT_URL="https://nw24.seedr.cc/ff_get/5845977440/www.5MovieRulz.express%20-%20Little%20Hearts%20(2025)%20Telugu%20HQ%20HDRip%20-%20x264%20-%20AAC%20-%20250MB%20-%20ESub.mkv?st=KwsGTH4Xe27iALy14XbOGw&e=1766977293"
-          OUTPUT_FOLDER="lhl"
+          INPUT_URL="https://rd22.seedr.cc/ff_get/5845987250/www.5MovieRulz.family%20-%20Kingdom%20(2025)%20Telugu%20HQ%20HDRip%20-%20x264%20-%20AAC%20-%20250MB%20-%20ESub.mkv?st=sOec3thHPKBLsFvQb3hS1Q&e=1766978197"
+          OUTPUT_FOLDER="kingdoml"
           mkdir -p "$OUTPUT_FOLDER"
           OUTPUT_PATH="$OUTPUT_FOLDER/playlist.m3u8"
 
@@ -68,7 +68,7 @@ jobs:
           git config --global user.name "pothabattulavinod"
           git config --global user.email "vinodyadavpothabattula666@gmail.com"
 
-          git add lhl
+          git add kingdoml
 
           if ! git diff-index --quiet HEAD; then
             git commit -m "Add HLS (video copy + Telugu 5.1 audio) [skip ci]"
