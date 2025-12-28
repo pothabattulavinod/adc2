@@ -26,8 +26,8 @@ jobs:
         run: |
           set -e
 
-          INPUT_URL="https://nw22.seedr.cc/ff_get/5845971935/www.5MovieRulz.flights%20%20-%20Andhra%20King%20Taluka%20(2025)%20Telugu%20HQ%20HDRip%20-%20x264%20-%20AAC%20-%20250MB%20-%20ESub.mkv?st=-0OBZDObKr-pCj9sVvCK_Q&e=1766974264"
-          OUTPUT_FOLDER="akt"
+          INPUT_URL="https://rd11.seedr.cc/ff_get/5845972962/www.5MovieRulz.condos%20-%20Raju%20Weds%20Rambai%20(2025)%20Telugu%20HQ%20HDRip%20-%20x264%20-%20(AAC%202.0)%20-%20250MB.mkv?st=D3UG6_t0TN1p49PcTRVzkw&e=1766975330"
+          OUTPUT_FOLDER="rwrl"
           mkdir -p "$OUTPUT_FOLDER"
           OUTPUT_PATH="$OUTPUT_FOLDER/playlist.m3u8"
 
@@ -68,7 +68,7 @@ jobs:
           git config --global user.name "pothabattulavinod"
           git config --global user.email "vinodyadavpothabattula666@gmail.com"
 
-          git add akt
+          git add rwrl
 
           if ! git diff-index --quiet HEAD; then
             git commit -m "Add HLS (video copy + Telugu 5.1 audio) [skip ci]"
