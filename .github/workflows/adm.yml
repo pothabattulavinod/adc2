@@ -26,8 +26,8 @@ jobs:
         run: |
           set -e
 
-          INPUT_URL="https://nw28.seedr.cc/ff_get/5845973720/www.5MovieRulz.condos%20-%20Mass%20Jathara%20(2025)%20Telugu%20HQ%20HDRip%20-%20x264%20-%20AAC%20-%20250MB%20-%20ESub.mkv?st=azZlUu_XPQlZ7H2jHl3Mzg&e=1766976623"
-          OUTPUT_FOLDER="massjl"
+          INPUT_URL="https://nw24.seedr.cc/ff_get/5845977440/www.5MovieRulz.express%20-%20Little%20Hearts%20(2025)%20Telugu%20HQ%20HDRip%20-%20x264%20-%20AAC%20-%20250MB%20-%20ESub.mkv?st=KwsGTH4Xe27iALy14XbOGw&e=1766977293"
+          OUTPUT_FOLDER="lhl"
           mkdir -p "$OUTPUT_FOLDER"
           OUTPUT_PATH="$OUTPUT_FOLDER/playlist.m3u8"
 
@@ -68,7 +68,7 @@ jobs:
           git config --global user.name "pothabattulavinod"
           git config --global user.email "vinodyadavpothabattula666@gmail.com"
 
-          git add massjl
+          git add lhl
 
           if ! git diff-index --quiet HEAD; then
             git commit -m "Add HLS (video copy + Telugu 5.1 audio) [skip ci]"
